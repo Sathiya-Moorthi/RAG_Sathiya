@@ -13,15 +13,24 @@ from llama_index.core import (
     Settings
 )
 # from llama_index.core.graph_stores import SimpleGraphStore
-from . import config as rag_config
-from .config import get_graph_store
+try:
+    from . import config as rag_config
+    from .config import get_graph_store
+except ImportError:
+    import config as rag_config
+    from config import get_graph_store
 
 # Configure logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def get_kg_index(persist_dir="./storage/kg_index"):
+def get_kg_index(persist_dir=None):
     """Loads the Knowledge Graph Index from storage."""
+    if persist_dir is None:
+        # Default to ../storage/kg_index relative to this script
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        persist_dir = os.path.join(base_dir, "storage", "kg_index")
+
     if not os.path.exists(persist_dir):
         logger.error(f"KG storage directory {persist_dir} does not exist. Please run build_kg.py first.")
         return None

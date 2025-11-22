@@ -1,0 +1,7 @@
+llama-index
+llama-index-vector-stores-postgres
+llama-index-llms-openai
+llama-index-embeddings-openai
+psycopg2-binary
+python-dotenv
+networkx
